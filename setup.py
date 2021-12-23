@@ -7,9 +7,9 @@ Created on Fri Dec 24 01:38:05 2021
 
 from setuptools import setup, find_packages
 long_description= '''Library for the 3 semester'''
-setup(name='Library',
+setup(name='Zadacha',
       version='1.5',
-      url='https://github.com/Rozyyev23/Library',
+      url='https://github.com/Rozyyev23/Library_AR',
       license='MIT',
       author='Rozyyev23',
       author_email='atarozyev2307@gmail.com',
