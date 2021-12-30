@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Dec 24 00:10:04 2021
-
 @author: Windows 10 Pro
 """
 from __future__ import print_function, division
@@ -44,7 +43,10 @@ from scipy.interpolate import interp1d
 
 
 def __zadacha1__():
-    '''Дифференциирование с пределом и шагом'''
+    '''Дифференциирование с пределом и шагом
+    входные данные: Функция, левая граница
+    правая граница, количество точек в интервале
+    шаг с которым мы ищем производную'''
     start = float(input('Введите нижний предел:'))
     end = float(input('Введите верхний предел:'))
     step = float(input('Введите шаг дифференцирования:'))
@@ -54,6 +56,10 @@ def __zadacha1__():
     x_axis = [round(v, 1) for v in x_axis]  # округление элементов массива
 
     def funct(x):
+        '''функция sinx/x
+        входные данные - x
+        значение значение частного'''
+
         try:  # танцы с бубном или как подорожник лечит всё
             y = math.sin(x)/x
         except ZeroDivisionError:
@@ -63,7 +69,12 @@ def __zadacha1__():
             return y
 
     def derivative(a):
-        b = (funct(a+step)-funct(a-step))/(2*step)  # функция нахождения f'
+        '''функция нахождения f'
+        входные функции: вышеуказанная функция,
+        значение x
+        получаем значение f'
+        '''
+        b = (funct(a + step) - funct(a - step))/(2 * step)
         return b
     # создание списков, для дальнейшего добавления данных в них
     y_axis = []
@@ -102,13 +113,17 @@ def __zadacha1__():
     plt.grid(True)
 
 
-
 def __zadacha1_2__():
     '''Численное интегрирование'''
     start_time = datetime.now()
 
     # функция для нахождения численного интеграла методом трапеции
     def trap(f, a, b, step_i):
+            '''Функция считает площадь под графиком на интервале
+                Функция
+                левая граница
+                правая граница
+                шаг для метода трапеций'''
         numb_of_steps = (b - a) / step_i
         print('Количество трапеций:', numb_of_steps)
         s = (f(a) + f(b)) / 2
@@ -142,7 +157,14 @@ def __zadacha1_2__():
     
     
 def __zadacha2__():
-    ''' Операции с матрицами'''
+    ''' Название: __zadacha2__
+       Входные параметры: 
+       x,y - число строк, число столбцов (int)
+       Выходные параметры: 
+       trans_matrix_1(транспонированная матрица),
+       end_time - start_time(время выполнения транспонирования матрицы)
+       Краткое описание: 
+       траснпонирование матрицы и подсчет времени работы функции.'''
     x = int(input('Введите количество строк: '))
     y = int(input('Введите количество столбцов: '))
     Matrix = []
@@ -384,7 +406,10 @@ def vvod_s_klav():
 
 
 def proverka(lst_x, lst_x0, tochn):
-
+    '''Название: proverka
+           Входные параметры: lst_x,lst_y, tochn - списки (list), начальное приблежение(int)
+           Выходные параметры: True/False (bool)
+           Краткое описание: проверка приблежения перед решением итерационнго метода Якоби.'''
     for i in range(len(lst_x)):
         if abs(lst_x[i] - lst_x0[i]) > tochn:
             return False
@@ -392,6 +417,10 @@ def proverka(lst_x, lst_x0, tochn):
 
 
 def reshit_yiakobi(matrix, tochn):
+    '''Название: reshit_yiakobi
+               Входные параметры: matrix(list) - система линейных уравнений  , tochn - начальное приблежение(int)
+               Выходные параметры: lst_x(list)
+               Краткое описание: Простой итерационный метод Якоби.'''
     lst_x0 = []
     lst_x = []
     
@@ -437,7 +466,10 @@ def reshit_yiakobi(matrix, tochn):
     
     
 def reshit_gauss(matrix, okrug):
-    
+    '''Название: reshit_gauss
+                   Входные параметры: matrix(list) - система линейных уравнений
+                   Выходные параметры: rezult(list), ob_gauss(list)
+                   Краткое описание: Метод исключения Гаусса-Жордана'''
     #Расширение единичной:
     for i in range(len(matrix)):
         for j in range(len(matrix)):
@@ -457,7 +489,7 @@ def reshit_gauss(matrix, okrug):
             if j != i:
                 tot_samyi2 = matrix[j][i]
                 for ind, el in enumerate(matrix[j]):
-                    matrix[j][ind] = el - matrix[i][ind]*tot_samyi2
+                    matrix[j][ind] = el - matrix[i][ind] * tot_samyi2
         
     print(*matrix, sep='\n')
     rezult = [stroka[len(matrix)] for stroka in matrix]
@@ -468,7 +500,15 @@ def reshit_gauss(matrix, okrug):
 
 
 def __zadacha3_1__():
+    '''Название: __zadacha3_1__
+                   Входные параметры: matrix(list) - система линейных уравнений
+                   Выходные параметры: решение СЛАУ(методом Гаусса, Якоби)
+                   Краткое описание: Решение СЛАУ'''
     def preobrazovanie(matrix):
+        '''Название: preobrazovanie
+                       Входные параметры: matrix(list) - система линейных уравнений
+                       Выходные параметры: matrix(list) - преобразованная матрица
+                       Краткое описание: Преобразование матрицы'''
         for i in range(len(matrix)):
             if matrix[i][i] == 0:
                 for j in range(len(matrix)):
@@ -478,8 +518,17 @@ def __zadacha3_1__():
         return matrix
     
     def obyslovlennost(matrix, obrat_matrix):
+        '''Название: obyslovlennost
+                       Входные параметры: matrix(list) - система линейных уравнений,
+                       obrat_matrix - обратная матрица(list)
+                       Выходные параметры: norma(matrix) * norma(obrat_matrix)(int)
+                       Краткое описание: Число обусловленности матрицы'''
 
         def norma(matrix):
+            '''Название: norma
+                        Входные параметры: matrix(list) - система линейных уравнений
+                        Выходные параметры: norm - норма матрицы(число)(int)
+                        Краткое описание: Норма матрицы - число(скаляр)'''
             norm = 0
             for i in range(len(matrix)):
                 if sum([abs(el) for el in matrix[i]]) > 0:
@@ -490,8 +539,16 @@ def __zadacha3_1__():
         return norma(matrix)*norma(obrat_matrix)
 
     def get_cofactor(matrix, i, j):
+        '''Название: get_cofactor
+                               Входные параметры: matrix, i,j
+                               Выходные параметры: [row[: j] + row[j + 1:]
+                               Краткое описание: Алгебраисческое дополнение'''
         return [row[: j] + row[j+1:] for row in (matrix[: i] + matrix[i+1:])]
     def is_singular(matrix):
+        '''Название: is_singular
+                               Входные параметры: matrix(list)
+                               Выходные параметры: det(int)
+                               Краткое описание: Выражденность матрицы'''
         n = len(matrix)
         if (n == 2):
             val = matrix[0][0]*matrix[1][1] - matrix[1][0]*matrix[0][1]
@@ -499,12 +556,16 @@ def __zadacha3_1__():
 
         det = 0
         for i in range(n):
-            s = (-1)**i
+            s = (-1) ** i
             sub_det = is_singular(get_cofactor(matrix, 0, i))
-            det += (s*matrix[0][i]*sub_det)
+            det += (s*matrix[0][i] * sub_det)
         return det
 
     def reshit_dan_matrix(tochn = 0.001):
+        '''Название: reshit_dan_matrix
+                               Входные параметры: matrix = vvod_s_klav()
+                               Выходные параметры: решение матричного уравнения(методом Гаусса, Якоби)
+                               Краткое описание: Решение СЛАУ'''
     #     matrix = vvod_random()
         matrix = vvod_s_klav()
     #    matrix = vvod_csv()
@@ -591,6 +652,10 @@ def __zadacha3_1__():
     
     
 def preobrazovanie(matrix):
+    '''Название: preobrazovanie
+                   Входные параметры: matrix(list) - система линейных уравнений
+                   Выходные параметры: matrix(list) - преобразованная матрица
+                   Краткое описание: Преобразование матрицы'''
     for i in range(len(matrix)):
         if matrix[i][i] == 0:
             for j in range(len(matrix)):
@@ -601,7 +666,10 @@ def preobrazovanie(matrix):
 
 
 def reshit_gauss(matrix):
-    
+    '''Название: reshit_gauss
+                   Входные параметры: matrix(list) - система линейных уравнений
+                   Выходные параметры: rezult(list)
+                   Краткое описание: Метод исключения Гаусса-Жордана'''
     #Проверяем, чтобы на диагонали не было нулей
     fl = 0
     for i in range(len(matrix)):
@@ -634,6 +702,7 @@ def reshit_gauss(matrix):
 def __zadacha4_1__():
     '''Интеполяция методом Лагранжа'''
     def vvod_csv():
+        '''ввод csv'''
         FILENAME = input('Введите название файла: ')
 
         lst_csv = []
@@ -672,6 +741,9 @@ def __zadacha4_1__():
         return stroka_lagr
 
     def lst_lagranz(lst_x, lst_y, stroka):
+        '''фуввод списка для интеполции методом лагранжа
+        вводим x y и строку
+        получаем новый список'''
         lst_rez = []
         for i in range(len(lst_x)):
             x = lst_x[i]
@@ -679,6 +751,8 @@ def __zadacha4_1__():
         return lst_rez
 
     def print_interpol_lagranz(lst, stroka):
+        '''вывод значений полученных интеполяцией методом Лагранжа
+        на вход принимается строка и список'''
         lst_x = np.array([el[0] for el in lst], dtype=float)
         lst_y = np.array([el[1] for el in lst], dtype=float)
 
@@ -696,8 +770,8 @@ def __zadacha4_1__():
                         p1 = p1 * 1
                         p2 = p2 * 1
                     else:
-                        p1 = p1 * (t-x[i])
-                        p2 = p2 * (x[j]-x[i])
+                        p1 = p1 * (t - x[i])
+                        p2 = p2 * (x[j] - x[i])
                 z = z + y[j] * p1 / p2
                 lst_for_rez.append(z)
             return z
@@ -712,6 +786,7 @@ def __zadacha4_1__():
         print(stroka)
 
     def interpol_meth_lag(lst, print_all=True):
+        # интерполяция методом лагранжа. принимаем список значений
         stroka = poisk_coeff([el[0] for el in lst], [el[1] for el in lst])
         rezult = lst_lagranz([el[0] for el in lst], [el[1] for el in lst],\
                              stroka[41:])
@@ -744,6 +819,8 @@ def __zadacha4_2__():
         return r
 
     def lst_newton(lst_x, lst_y, stroka):
+        '''принимаем данные для интерполяции ньютоном
+        на вход подаются два списка и строка''' 
         lst_rez = []
         for i in range(len(lst_x)):
             x = lst_x[i]
@@ -751,6 +828,8 @@ def __zadacha4_2__():
         return lst_rez
 
     def print_newton(lst_x, lst_y, stroka):
+        '''вывожим данные для интерполяции ньютоном (вперед)
+        на вход подаются два списка и строка'''
         lst_x_new = np.linspace(np.min(lst_x), np.max(lst_x), 100)
 
         lst_y_new = [eval(stroka) for x in lst_x_new]
@@ -764,6 +843,8 @@ def __zadacha4_2__():
         print(f"y = {stroka}")
 
     def print_newton_naz(lst_x, lst_y, stroka):
+        '''вывожим данные для интерполяции ньютоном (назад)
+        на вход подаются два списка и строка'''
         lst_x_new = np.linspace(np.min(lst_x), np.max(lst_x), 100)
 
         lst_y_new = [eval(stroka) for x in lst_x_new]
@@ -776,7 +857,10 @@ def __zadacha4_2__():
         plt.show()
         print(f"y = {stroka}")
 
-    def first_int_newton(lst, print_all=True):  # ДЛЯ РАВНООТСТОЯЩИХ
+    def first_int_newton(lst, print_all=True):  
+        '''первый интеполяционный многочлен ньютона
+        принимаем список значений
+        ДЛЯ РАВНООТСТОЯЩИХ'''
         lst_x = [el[0] for el in lst]
         lst_y = [el[1] for el in lst]
 
@@ -837,7 +921,10 @@ def __zadacha4_2__():
 
     first_int_newton(vvod_csv())
 
-    def second_int_newton(lst, print_all=True):  # ДЛЯ РАВНООТСТОЯЩИХ
+    def second_int_newton(lst, print_all=True):  
+        '''второй интеполяционный многочлен ньютона
+        принимаем список значений
+        ДЛЯ РАВНООТСТОЯЩИХ'''
         lst_x = [el[0] for el in lst]
         lst_y = [el[1] for el in lst]
 
@@ -903,6 +990,7 @@ def __zadacha4_2__():
 def __zadacha4_3__():
     '''Интерполяция методом кубического сплайна'''
     def vvod_csv():
+        # ввод csv
         FILENAME = input('Введите название файла: ')
 
         lst_csv = []
@@ -914,6 +1002,9 @@ def __zadacha4_3__():
         return lst_csv
 
     def lst_kub(lst_x, lst_y, lst_stroka):
+        '''список значений для кубического сплайна
+        принимаем список значений x y и строк'''
+        
         lst_rez = []
         for i in range(len(lst_x) - 1):
             x = lst_x[i]
@@ -921,6 +1012,8 @@ def __zadacha4_3__():
         return lst_rez
 
     def print_kub(lst_x, lst_y, lst_stroka):
+        '''выводим список значений для кубического сплайна
+        принимаем список значений x y и строк'''
         lst_x_new = np.linspace(np.min(lst_x), np.max(lst_x), 100)
 
         index = -1
@@ -935,7 +1028,10 @@ def __zadacha4_3__():
         plt.title(f"Интерполяция методом Кубического сплайна: ")
         plt.show()
 
-    def kub_sp(lst, print_all=True):  # ДЛЯ РАВНООТСТОЯЩИХ
+    def kub_sp(lst, print_all=True): 
+        '''кубический сплайн
+        принимаем список значений 
+        ДЛЯ РАВНООТСТОЯЩИХ'''
         lst_x = [el[0] for el in lst]
         lst_y = [el[1] for el in lst]
 
@@ -1014,6 +1110,11 @@ def __zadacha4_4__():
         return lst_csv
 
     def print_lin(lst_x, lst_y, stroka, dispers_lin):
+        '''вывод значений для аппроксимации линейной функцией
+        принимаем список аргументов и функций
+        строку
+        и влеичину дисперсии'''
+        
         lst_x_new = np.linspace(np.min(lst_x), np.max(lst_x), 100)
 
         lst_y_new = [eval(stroka) for x in lst_x_new]
@@ -1027,6 +1128,8 @@ def __zadacha4_4__():
         print(f'Величина дисперсии: {dispers_lin}')
 
     def lst_lin(lst_x, lst_y, stroka):
+        '''список значений
+        принимаем список аргументов, функций и строку'''
         lst_rez = []
         for i in range(len(lst_x)):
             x = lst_x[i]
@@ -1034,6 +1137,8 @@ def __zadacha4_4__():
         return lst_rez
 
     def MNK(lst, print_all=True):
+        '''метод наименьших квадратов
+        принимаем список''' 
         global dispers_lin
         global lst_tochki
         # Находим наше СЛАУ
@@ -1078,6 +1183,7 @@ def __zadacha4_4__():
 def __zadacha4_5__():
     '''Аппроксимация квадратичной функцией'''
     def vvod_csv():
+        # ввод через csv
         FILENAME = input('Введите название файла: ')
 
         lst_csv = []
@@ -1088,6 +1194,11 @@ def __zadacha4_5__():
 
         return lst_csv
     def print_kvad(lst_x, lst_y, stroka, dispers_kvad):
+        '''входные параметры
+        дисперсия квадратичная
+        x y
+        '''
+        
         lst_x_new = np.linspace(np.min(lst_x), np.max(lst_x), 100)
 
         lst_y_new = [eval(stroka) for x in lst_x_new]
@@ -1102,6 +1213,8 @@ def __zadacha4_5__():
         print(f'Величина дисперсии: {dispers_kvad}')
 
     def lst_kvad(lst_x, lst_y, stroka):
+        '''готовим список для мнк
+        на вход принимаем два списка (аргумент и функция) и строку'''
         lst_rez = []
         for i in range(len(lst_x)):
             x = lst_x[i]
@@ -1109,6 +1222,8 @@ def __zadacha4_5__():
         return lst_rez
 
     def aprox_kvad(lst, print_al=True):
+        '''аппроксимация квадратичной функций
+        на вход принимаем преобразованный список'''
         global dispers_kvad
         global lst_tochki_1
         # Находим наше СЛАУ
@@ -1183,6 +1298,8 @@ def __zadacha4_6__():
 
         return lst_csv
     def print_apr_norm(lst, stroka, dispers_norm):
+        '''вывод данных для аппроксимации функции нормального распределения
+        принимаем на вход список, строку и величину дисперсии'''
         lst_x = [el[0] for el in lst]
         lst_y = [el[1] for el in lst]
 
@@ -1198,6 +1315,8 @@ def __zadacha4_6__():
         print(f'Величина дисперсии: {dispers_norm}')
 
     def apr_norm(lst, print_all=True):
+        '''аппроксимация функцией нормального распределения
+        принимаем на вход список'''
         global lst_points
         global dispers_norm
         lst_x = [el[0] for el in lst]
@@ -1241,6 +1360,8 @@ def __zadacha4_6__():
     apr_norm(lst)
 
     def biggest(num1, num2, num3):
+        '''наибольшее число
+        принимаем на вход три числа'''
         if(num1 <= num2 and num1 <= num3):
             MNK()
         elif(num2 <= num1 and num2 <= num3): 
@@ -1251,9 +1372,12 @@ def __zadacha4_6__():
     apr_norm(vvod_csv())
     
 def __zadacha5_1__():
-    '''Расчет АХЧ'''
+    '''Расчет амплитудно-частотной характеристики АХЧ'''
     def F(lst): 
+        '''Функция реализует быстрое преобразование Фурье
+            получаем на вход список сигналов'''        
         def vvod_csv():
+            '''ввод csv'''
             FILENAME = input('Введите название файла: ')
         
             lst_csv = []
@@ -1264,7 +1388,7 @@ def __zadacha5_1__():
                    
             return lst_csv
     
-        period = (len(lst)-1)/(lst[-1][0] - lst[0][0])
+        period = (len(lst) - 1) / (lst[-1][0] - lst[0][0])
         spektor = []
         for i in range(1, len(lst)//2):
             y = (rfft([el[1] for el in lst]))[i]
@@ -1277,13 +1401,13 @@ def __zadacha5_1__():
     #     peaks = np.abs(rfft)
         step = spektor[1][0] - spektor[0][0]
         ind = peaks.index(max(peaks))
-        S0 = ((peaks[ind-1] + peaks[ind+1])/2 + peaks[ind])*step
+        S0 = ((peaks[ind - 1] + peaks[ind + 1]) / 2 + peaks[ind]) * step
     #     print(S0)
         Si = 0
         for i in range(1, len(peaks)):
-            Si += (peaks[i-1] + peaks[i])*step/2
+            Si += (peaks[i - 1] + peaks[i]) * step / 2
         Si = abs(Si - S0)
-        print(f'Коэффициент несинусоидальности {Si/S0}')
+        print(f'Коэффициент несинусоидальности {Si / S0}')
         
         fig, axs = plt.subplots(1, 3, figsize=(15, 5))
         axs[0].plot([el[0] for el in lst], [el[1] for el in lst])
@@ -1328,6 +1452,7 @@ def __zadacha5_2__():
         return lst_csv
     
     def F_experiment(lst): 
+        # эксперимент. принимаем список
     
         period = (len(lst)-1)/(lst[-1][0] - lst[0][0])
         spektor = []
@@ -1341,7 +1466,7 @@ def __zadacha5_2__():
         peaks = list(peaks_n)
         step = spektor[1][0] - spektor[0][0]
         ind = peaks.index(max(peaks))
-        S0 = ((peaks[ind-1] + peaks[ind+1])/2 + peaks[ind])*step
+        S0 = ((peaks[ind-1] + peaks[ind + 1]) / 2 + peaks[ind])*step
         Si = 0
         for i in range(1, len(peaks)):
             Si += (peaks[i-1] + peaks[i])*step/2
@@ -1395,6 +1520,7 @@ def __zadacha5_3__():
         return lst_csv
     
     def F_experiment2(lst): 
+        # аналогично как в задаче 5.2 принимаем список и реализуем эксперимент
 
         period = (len(lst)-1)/(lst[-1][0] - lst[0][0])
         spektor = []
@@ -1463,7 +1589,7 @@ def __zadacha5_4__():
 
         return lst_csv
     def haar_wavelet(lst):
-        # Строим график исходной функции
+        # Строим график исходной функции. принимаем список
         plt.plot([el[0] for el in lst], [el[1] for el in lst], 'orange')
         plt.grid(True)
         plt.title(f"Исходная функция")
@@ -1515,7 +1641,7 @@ def __zadacha5_5__():
         return lst_csv
 
     def db_wavelet(lst):
-        # Строим график исходной функции
+        # Строим график исходной функции. принимаем список
         plt.plot([el[0] for el in lst], [el[1] for el in lst], 'orange')
         plt.grid(True)
         plt.title(f"Исходная функция")
@@ -1576,6 +1702,7 @@ def __zadacha5_6__():
         return f
 
     def mex_wavelet(lst):
+        # вейвлет мексиканская шляпа. принимаем список
         plt.title("Вейвлет «Мексиканская шляпа»")
         x = [el[0] for el in lst]
         y = [w(1, 12, t) for t in x]
@@ -1602,6 +1729,10 @@ def __zadacha5_7__():
     df4 = np.append(0, np.array(pd.read_csv('2_sin_5_4.5.csv'))[:, 1:])
 
     def descrete_decomposition(num_levels, y, name_sample):
+        '''Функция выводит Вейвлет-декомпозиции до уровня n
+        num_levels - количество уровней декомпозиции
+        y - список сигналов
+        name_sample - названия списка сигналов        ''' 
         for wev in ['haar', 'db2']:
             x = np.append(0, np.array(pd.read_csv(name_sample))[:, :1])
             plt.plot(x, y, 'orange')
@@ -1627,10 +1758,17 @@ def __zadacha5_7__():
     descrete_decomposition(4, df4, '2_sin_5_4.5.csv')
 
     def count_level(func, wavelet):
+         """Функция возвращает массивы аппроксимации и детализации 
+    func - список сигналов
+    wavelet - название вейвлета"""
         a, b = pywt.cwt(func, np.arange(1, 4), wavelet)
         return a, b
 
     def cont_decomposition(num_levels, y, name_sample):
+         """Функция выводит Вейвлет-декомпозиции до уровня n
+    num_levels - количество уровней декомпозиции
+    y - список сигналов
+    name_sample - названия списка сигналов"""
         for wev in ['gaus1', 'mexh']:
             x = np.append(0, np.array(pd.read_csv(name_sample))[:, :1])
             plt.plot(x, y, 'orange')
@@ -1661,6 +1799,11 @@ def __zadacha5_7__():
     cont_decomposition(4, df4, '2_sin_5_4.5.csv')
 
     def coeficcient(y, name_sample):
+        '''функция для расчета коэффициента.
+        принимаем y - список сигналов
+    name_sample - названия списка сигналов
+        
+        ''' 
         for wev in ['haar', 'db2']:
             coeffs = pywt.wavedec(y, wev, level=4)
             d1 = sum([abs(el) for el in coeffs[1]])
@@ -1705,6 +1848,10 @@ def __zadacha7__():
                   temperature,
                   maxsteps=1000,
                   debug=True):
+        '''Алгоритм имитации отжига 
+        принимаем: стартовая точка, функция стоимости, 
+        соседи, принятие, температура, 
+        макс число шагов'''
         state = random_start()
         cost = cost_function(state)
         states, costs = [state], [cost]
@@ -1755,6 +1902,9 @@ def __zadacha7__():
 
 
     def acceptance_probability(cost, new_cost, temperature):
+        """ Функция считает вероятность перехода в другую вершину
+    cost и new cost - вес возможного и настоящего пути
+    temperature - температура"""
         if new_cost < cost:
             return 1
         else:
@@ -1879,6 +2029,7 @@ def __zadacha7_3__():
         
         
 def diff_left_side(x, y):
+    '''левосторонняя разность. принимаем значения x и у'''
     h = x[1] - x[0]
     dy = []
     for i in range(1, len(x)):
@@ -1887,6 +2038,7 @@ def diff_left_side(x, y):
 
 
 def is_number(str):
+    # является ли числом
     try:
         float(str)
         return True
@@ -1905,6 +2057,7 @@ def is_number(str):
         
 
 def type_conversion(str):
+    # преобразование типов
     try:
         float(str)
         return float(str)
@@ -1914,6 +2067,7 @@ def type_conversion(str):
     
     
 def matrixTranspose(anArray):
+    # транспонировать матрицу
     transposed = [None] * len(anArray[0])
     for t in range(len(anArray)):
         transposed[t] = [None] * len(anArray)
@@ -1923,6 +2077,7 @@ def matrixTranspose(anArray):
 
 
 def matrix(random=0, float_random=0, a=1, b=100):
+    # создание матрицы
     m = input('Введите количество строк: ')
 
     while m.isdigit() != 1:
@@ -1970,10 +2125,12 @@ def matrix(random=0, float_random=0, a=1, b=100):
 
 
 def det2(matrix):
+    # 2 -ой  детерминант матрицы. принимаем матрицу
     return matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]
 
 
 def alg_dop(matrix, somme=None, prod=1):
+    # алгебраическое дополнение матрицы. принимаем матрицу
     if (somme == None):
         somme = []
     if (len(matrix) == 1):
@@ -1990,10 +2147,12 @@ def alg_dop(matrix, somme=None, prod=1):
 
 
 def determinant(matrix):
+    # детерминант матрицы. принимаем матрицу
     return sum(alg_dop(matrix))
 
 
 def sum_matrix(mtrx_1, mtrx_2):
+    # сумма матриц. принимаем матрицы
     tmp_mtrx = [[0 for j in range(len(mtrx_1))] for i in range(len(mtrx_1[0]))]
     for i in range(len(mtrx_1)):
         for j in range(len(mtrx_1[0])):
@@ -2004,6 +2163,7 @@ def sum_matrix(mtrx_1, mtrx_2):
 
 
 def minor(matrix, i, j):
+    # минор матрицы. принимаем матрицу, и "степень" минора
     minor = []
     for q in (matrix[:i] + matrix[i + 1:]):
         _ = q[:j] + q[j + 1:]
@@ -2012,6 +2172,7 @@ def minor(matrix, i, j):
 
 
 def subtraction_matrix(mtrx_1, mtrx_2):
+    # разность матриц. принимаем матрицы
     tmp_mtrx = [[0 for j in range(len(mtrx_1))] for i in range(len(mtrx_1[0]))]
     for i in range(len(mtrx_1)):
         for j in range(len(mtrx_1[0])):
@@ -2022,6 +2183,7 @@ def subtraction_matrix(mtrx_1, mtrx_2):
 
 
 def mult_by_count_matrix(mtrx_1, k):
+    '''умножение матрицы на число. принимаем матрицу и число'''
     tmp_mtrx = [[0 for j in range(len(mtrx_1))] for i in range(len(mtrx_1[0]))]
     for i in range(len(mtrx_1)):
         for j in range(len(mtrx_1[0])):
@@ -2032,6 +2194,7 @@ def mult_by_count_matrix(mtrx_1, k):
 
 
 def multiply_matrix(mtrx_1, mtrx_2):
+    '''умножение матриц. принимаем матрицы'''
     s = 0
     t = []
     m3 = []
@@ -2058,6 +2221,7 @@ def single_variable(row,
 
 
 def norma(matrix):
+    '''норма матрицы. принимаем матрицу'''
     norma_matrix = []
     for i in range(len(matrix)):
         summa = 0
@@ -2068,6 +2232,7 @@ def norma(matrix):
 
 
 def reverse_matrix(matrix):
+    # обратная матрицы. принимаем матрицу
     deter = determinant(matrix)
     try:
         a = 1 / deter
@@ -2583,6 +2748,7 @@ def aprox_st(xp,fp):
     
     
 def input_function():
+    # функция для ввода 
     t = symbols('t')
     y = symbols('y')
     z = symbols('z')
@@ -2602,6 +2768,7 @@ def input_function():
 
 
 def euler(func, n=100):
+    # метод эйлера. принимаем функцию
     Y0 = float(input('Начальное условие, y0 = '))
     a = float(input('Начало промежутка x: '))
     b = float(input('Конец промежутка x: '))
@@ -2672,6 +2839,7 @@ def euler_Koshi(func,n=100):
     
     
 def rungekutta4(function):
+    # рунге-кутте. принимаем уравнение
     y0 = float(input('Начальное условие, y0 = '))    
     a = float(input('Начало промежутка x: '))
     b = float(input('Конец промежутка x: '))
@@ -2943,23 +3111,24 @@ def __zadacha6_0__():
 
 
 def Help():
-    print('__zadacha1__')
-    print('__zadacha1_2__')
-    print('__zadacha2__')
-    print('__zadacha3_1__')
-    print('__zadacha4_1__')
-    print('__zadacha4_2__')
-    print('__zadacha4_3__')
-    print('__zadacha4_4__')
-    print('__zadacha4_5__')
-    print('__zadacha4_6__')
-    print('__zadacha5_1__')
-    print('__zadacha5_2__')
-    print('__zadacha5_3__')
-    print('__zadacha5_4__')
-    print('__zadacha5_5__')
-    print('__zadacha5_6__')
-    print('__zadacha5_7__')
-    print('__zadacha6_0__')
-    print('__zadacha7__')
-    print('__zadacha7_3__')
+    print('__zadacha1__ Дифференциирование с пределом и шагом')
+    print('__zadacha1_2__ Численное интегрирование')
+    print('__zadacha2__ Операции с матрицами')
+    print('__zadacha3_1__ матрицы. (преобразование, обусловленность, норма, метод гаусса)')
+    print('__zadacha4_1__ Интеполяция методом Лагранжа')
+    print('__zadacha4_2__ Интерполяция методом Ньютона')
+    print('__zadacha4_3__ Интерполяция методом кубического сплайна')
+    print('__zadacha4_4__ Аппроксимация линейной функцией')
+    print('__zadacha4_5__ Аппроксимация квадратичной функцией')
+    print('__zadacha4_6__ Аппроксимация ф-ей нормального распределения')
+    print('__zadacha5_1__ Расчет АХЧ')
+    print('__zadacha5_2__ Эксперимент с 10%')
+    print('__zadacha5_3__ Эксперимент с 10%')
+    print('__zadacha5_4__ Вейвлеты haar')
+    print('__zadacha5_5__ Вейвлеты db')
+    print('__zadacha5_6__ Мексиканская шляпа')
+    print('__zadacha5_7__ Вейвлеты')
+    print('__zadacha6_0__ ОДУ')
+    print('__zadacha7__ Алгоритм имитации отжига')
+    print('__zadacha7_3__ Муравьиная колония')
+    
