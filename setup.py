@@ -2,7 +2,11 @@
 """
 Created on Fri Dec 24 01:38:05 2021
 
-@author: Windows 10 Pro
+@author: 
+Розыев Ата
+Мамаджанов Азиз
+Джаводов Санджар
+Гордеева Евгения
 """
 
 from setuptools import setup, find_packages
