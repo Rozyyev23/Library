@@ -1,1 +1,1 @@
-from .Zadacha import *
+from Zadacha import *
