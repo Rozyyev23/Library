@@ -1,1 +1,1 @@
-import Zadacha.py
+import Zadacha
