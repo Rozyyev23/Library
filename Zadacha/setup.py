@@ -18,4 +18,5 @@ setup(name='Zadacha',
       author='Rozyyev23',
       author_email='atarozyev2307@gmail.com',
       description='Add static script_dir() method to Path',
-      zip_safe=False)
+      zip_safe=False
+      packages=find_packages() )
